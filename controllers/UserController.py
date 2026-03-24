@@ -14,4 +14,4 @@ class AuthController:
             return success, "Usuario creado correctamente"
         except ValidationError as e:
             # Retorna el primer error de validación encontrado
-            return False, e.errors()[0]['msg']
+            return False, e.errors()[0]['msg']  
