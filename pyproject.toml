@@ -1,0 +1,18 @@
+dependencies = [
+    "mysql-connector>=2.2.9",
+    "mysql-connector-python>=9.6.0",
+    "pydantic[email]>=2.12.5",
+    "python-dotenv>=1.2.2",
+]
+
+[project.scripts]
+# Aquí definimos el comando corto.
+# Importante: Quitamos el prefijo "src." porque definiremos "src" como la raíz.
+app = "main:main"
+
+[tool.uv]
+package = true
+
+# Esta sección es crucial para que Python vea el contenido de src como el nivel raíz
+[tool.setuptools.package-dir]
+"" = "src"
