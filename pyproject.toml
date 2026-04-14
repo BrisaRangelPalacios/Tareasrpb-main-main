@@ -10,7 +10,7 @@ dependencies = [
 # Importante: Quitamos el prefijo "src." porque definiremos "src" como la raíz.
 app = "main:main"
 
-[tool.uv]
+[tool.uv] 
 package = true
 
 # Esta sección es crucial para que Python vea el contenido de src como el nivel raíz

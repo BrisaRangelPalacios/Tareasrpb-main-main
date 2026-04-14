@@ -71,4 +71,4 @@ def DashboardView(page, tarea_controller):
             )
         ],
         on_open=lambda _: refresh()
-    )
+    ) 
