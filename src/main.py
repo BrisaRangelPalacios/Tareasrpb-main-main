@@ -27,7 +27,16 @@ def start(page: ft.Page):
         # agregas aqui las vistas que necesites
         page.update()
 
+    
+    def view_pop(e):
+        if len(page.views) > 1:
+            page.views.pop()
+            top_view = page.views[-1]
+            page.go(top_view.route)
+
+    
     page.on_route_change = route_change
+    page.on_view_pop = view_pop
 
     page.go("/")
 
