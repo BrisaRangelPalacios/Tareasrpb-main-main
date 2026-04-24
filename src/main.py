@@ -25,7 +25,7 @@ def start(page: ft.Page):
         if len(page.views) == 0:
             page.views.append(LoginView(page, auth_ctrl))
 
-        page.update()
+        page.update() 
 
     page.on_route_change = route_change
 
