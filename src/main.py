@@ -2,46 +2,54 @@ import flet as ft
 from controllers.UserController import AuthController
 from controllers.TareaController import TareaController
 from view.loginview import LoginView
-from view.deshbooard import DashboardView
+from view.dashboard import DashboardView
 
 def start(page: ft.Page):
-    # instanciar controladores ua sola
-    auth_ctrl = AuthController()
-    task_ctrl = TareaController()
+
+    page.title = "SIGE"
+    page.theme_mode = ft.ThemeMode.LIGHT
+
+    auth = AuthController()
+    tareas = TareaController()
 
     def route_change(e):
         page.views.clear()
 
-        if page.route == "/":
-            page.add(ft.Text("Caso 1"))
-            page.views.append(LoginView(page, auth_ctrl))
+        try:
+            if page.route == "/":
+                page.views.append(LoginView(page, auth))
 
-        elif page.route == "/dashboard":
-            page.views.append(DashboardView(page, task_ctrl))
+            elif page.route == "/dashboard":
+                user = page.session.get("user")
 
-        if not page.views:
+                if not user:
+                    page.go("/")
+                    return
+
+                page.views.append(DashboardView(page, tareas))
+
+            else:
+                page.views.append(
+                    ft.View("/", [ft.Text("Página no encontrada")])
+                )
+
+            page.update()
+
+        except Exception as ex:
+            page.views.clear()
             page.views.append(
-                ft.View("/", [ft.Text("Error: Ruta no encontrada o vista vacía")])
+                ft.View("/", [ft.Text(f"ERROR: {str(ex)}")])
             )
+            page.update()
 
-        # agregas aqui las vistas que necesites
-        page.update()
-
-    
     def view_pop(e):
         if len(page.views) > 1:
             page.views.pop()
-            top_view = page.views[-1]
-            page.go(top_view.route)
+            page.go(page.views[-1].route)
 
-    
     page.on_route_change = route_change
     page.on_view_pop = view_pop
 
     page.go("/")
 
-def main():
-    ft.app(target=start)
-
-if __name__ == "__main__":
-    main()
+ft.app(target=start)

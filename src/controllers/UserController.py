@@ -6,9 +6,17 @@ class AuthController:
     def __init__(self):
         self.model = UsuarioModel()
 
+  
+    def login(self, email, password):
+        user = self.model.login(email, password)
+
+        if user:
+            return user
+        return None
+
+    
     def registrar_usuario(self, nombre, email, password):
         try:
-            # Validar datos con el Schema
             nuevo_usuario = UsuarioSchema(
                 nombre=nombre,
                 email=email,
