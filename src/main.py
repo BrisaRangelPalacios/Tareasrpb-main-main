@@ -1,55 +1,39 @@
 import flet as ft
-from controllers.UserController import AuthController
+from controllers.UserController import AuthController 
 from controllers.TareaController import TareaController
-from view.loginview import LoginView
-from view.dashboard import DashboardView
+from view.LoginView import LoginView
+from view.dashboardView import dashboardView  
 
 def start(page: ft.Page):
+    page.title = "Sistema SIGE"
+    page.window_width = 450
+    page.window_height = 700
 
-    page.title = "SIGE"
-    page.theme_mode = ft.ThemeMode.LIGHT
-
-    auth = AuthController()
-    tareas = TareaController()
+    auth_ctrl = AuthController()
+    task_ctrl = TareaController()
 
     def route_change(e):
         page.views.clear()
 
-        try:
-            if page.route == "/":
-                page.views.append(LoginView(page, auth))
+        if page.route == "/":
+            page.views.append(LoginView(page, auth_ctrl))
 
-            elif page.route == "/dashboard":
-                user = page.session.get("user")
+        elif page.route == "/dashboard":
+            page.views.append(dashboardView(page, task_ctrl))
 
-                if not user:
-                    page.go("/")
-                    return
+      
+        if len(page.views) == 0:
+            page.views.append(LoginView(page, auth_ctrl))
 
-                page.views.append(DashboardView(page, tareas))
-
-            else:
-                page.views.append(
-                    ft.View("/", [ft.Text("Página no encontrada")])
-                )
-
-            page.update()
-
-        except Exception as ex:
-            page.views.clear()
-            page.views.append(
-                ft.View("/", [ft.Text(f"ERROR: {str(ex)}")])
-            )
-            page.update()
-
-    def view_pop(e):
-        if len(page.views) > 1:
-            page.views.pop()
-            page.go(page.views[-1].route)
+        page.update()
 
     page.on_route_change = route_change
-    page.on_view_pop = view_pop
 
     page.go("/")
+    page.update()
 
-ft.app(target=start)
+def main():
+    ft.app(target=start)
+
+if __name__ == "__main__":
+    main()

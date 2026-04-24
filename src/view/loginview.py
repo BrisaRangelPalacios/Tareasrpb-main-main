@@ -2,47 +2,37 @@ import flet as ft
 
 def LoginView(page, auth_controller):
 
-    email = ft.TextField(label="Correo", width=320)
-    password = ft.TextField(label="Contraseña", password=True, width=320)
-
-    msg = ft.Text()
+    correo = ft.TextField(label="Correo", width=300)
+    contraseña = ft.TextField(label="Contraseña", password=True, width=300)
+    mensaje = ft.Text(color="red")
 
     def login(e):
-        try:
-            user = auth_controller.login(email.value, password.value)
+        user = auth_controller.model.validar_login(correo.value, contraseña.value)
 
-            if user:
-                page.session.set("user", user)
-                page.go("/dashboard")
-            else:
-                msg.value = "Usuario o contraseña incorrectos"
-                msg.color = "red"
-                page.update()
-
-        except Exception as ex:
-            msg.value = f"Error: {ex}"
-            msg.color = "red"
+        if user:
+            page.session.set("user", user)
+            page.go("/dashboard")
+        else:
+            mensaje.value = "Correo o contraseña incorrectos"
             page.update()
 
     return ft.View(
         route="/",
         controls=[
             ft.Container(
-                expand=True,
-                alignment=ft.alignment.center,
                 content=ft.Column(
                     [
-                        ft.Icon(ft.Icons.LOCK_PERSON, size=70),
-                        ft.Text("SIGE - Login", size=26, weight="bold"),
-                        email,
-                        password,
-                        ft.ElevatedButton("Entrar", on_click=login),
-                        msg
+                        ft.Text("SIGE - Login", size=30, weight="bold"),
+                        correo,
+                        contraseña,
+                        ft.ElevatedButton("Iniciar sesión", on_click=login),
+                        mensaje
                     ],
                     alignment=ft.MainAxisAlignment.CENTER,
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                    spacing=15
-                )
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER
+                ),
+                alignment=ft.alignment.center,
+                expand=True
             )
         ]
     )
