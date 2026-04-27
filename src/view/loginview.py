@@ -2,8 +2,21 @@ import flet as ft
 
 def LoginView(page, auth_controller):
 
-    correo = ft.TextField(label="Correo", width=300)
-    contraseña = ft.TextField(label="Contraseña", password=True, width=300)
+    page.bgcolor = "#f8bbd0"  
+    correo = ft.TextField(
+        label="Correo electrónico",
+        width=300,
+        border_radius=10
+    )
+
+    contraseña = ft.TextField(
+        label="Contraseña",
+        password=True,
+        can_reveal_password=True,
+        width=300,
+        border_radius=10
+    )
+
     mensaje = ft.Text(color="red")
 
     def login(e):
@@ -22,14 +35,21 @@ def LoginView(page, auth_controller):
             ft.Container(
                 content=ft.Column(
                     [
-                        ft.Text("SIGE - Login", size=30, weight="bold"),
+                        ft.Icon(ft.icons.AUTO_AWESOME, size=60, color="pink"),
+                        ft.Text("Bienvenido", size=28, weight="bold", color="pink"),
                         correo,
                         contraseña,
-                        ft.ElevatedButton("Iniciar sesión", on_click=login),
+                        ft.ElevatedButton(
+                            "Iniciar sesión",
+                            width=200,
+                            bgcolor="pink",
+                            color="white",
+                            on_click=login
+                        ),
                         mensaje
                     ],
-                    alignment=ft.MainAxisAlignment.CENTER,
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                    spacing=15
                 ),
                 alignment=ft.alignment.center,
                 expand=True

@@ -2,23 +2,24 @@ import flet as ft
 
 def dashboardView(page, tarea_controller):
     user = page.session.get("user")
+
     lista_tareas = ft.Column(scroll=ft.ScrollMode.ALWAYS, expand=True)
 
     def refresh():
         lista_tareas.controls.clear()
-        for t in tarea_controller.obtener_lista(user['id_usuario']):
+
+        tareas = tarea_controller.obtener_lista(user['id_usuario'])
+
+        if not tareas:
             lista_tareas.controls.append(
-                ft.Card(
-                    content=ft.Container(
-                        content=ft.ListTile(
-                            title=ft.Text(t['titulo'], weight="bold"),
-                            subtitle=ft.Text(f"{t['descripcion']}\nPrioridad: {t['prioridad']}"),
-                            trailing=ft.Text(t['estado'])
-                        ),
-                        padding=10
-                    )
-                )
+                ft.Text("No hay tareas")
             )
+        else:
+            for t in tareas:
+                lista_tareas.controls.append(
+                    ft.Text(f"{t['titulo']} - {t['estado']}")
+                )
+
         page.update()
 
     txt_titulo = ft.TextField(label="Nueva tarea", expand=True)
@@ -35,28 +36,29 @@ def dashboardView(page, tarea_controller):
             txt_titulo.value = ""
             refresh()
 
+    refresh()
+
     return ft.View(
         "/dashboard",
         [
             ft.AppBar(
-                title=ft.Text(f"Bienvenido, {user['nombre']}"),
+                title=ft.Text(f"Bienvenido {user['nombre']}"),
                 actions=[
-                    ft.IconButton(ft.icons.EXIT_TO_APP, on_click=lambda _: page.go("/"))
+                    ft.TextButton("Salir", on_click=lambda _: page.go("/"))
                 ],
             ),
             ft.Column(
                 [
                     ft.Row([
                         txt_titulo,
-                        ft.FloatingActionButton(icon=ft.icons.ADD, on_click=add_task),
+                        ft.ElevatedButton("Agregar", on_click=add_task),
                     ]),
                     ft.Divider(),
-                    ft.Text("Mis tareas", size=20, weight="bold"),
+                    ft.Text("Tareas:"),
                     lista_tareas
                 ],
                 expand=True,
                 padding=20
-            ),
-        ],
-        on_open=lambda _: refresh()
+            )
+        ]
     )
