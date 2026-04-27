@@ -26,7 +26,7 @@ def main(page: ft.Page):
 
     contenido = ft.Container() 
 
-    pagina_inicio = ft.Column(
+    pagina_inicio = ft.Column( 
         [
             ft.Text("Bienvenido al Sistema", size=28, weight=ft.FontWeight.BOLD, color="purple200"),
             ft.Text("Has iniciado sesión correctamente", color="purple100")
