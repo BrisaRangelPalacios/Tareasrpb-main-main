@@ -41,5 +41,5 @@ def start(page: ft.Page):
 def main():
     ft.app(target=start)
 
-if __name__ == "__main__":
+if __name__ == "__main__":   
     main()

@@ -24,7 +24,7 @@ def main(page: ft.Page):
 
     mensaje = ft.Text("", color="purple200")
 
-    contenido = ft.Container()
+    contenido = ft.Container() 
 
     pagina_inicio = ft.Column(
         [
