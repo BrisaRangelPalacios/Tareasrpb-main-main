@@ -1,8 +1,8 @@
 import flet as ft
 from controllers.UserController import AuthController 
 from controllers.TareaController import TareaController
-from views.LoginView import LoginView
-from views.dashboardView import dashboardView  
+from view.loginview import LoginView
+from view.dashboardView import dashboardView  
 
 def start(page: ft.Page):
     page.title="Sistema SIGE"

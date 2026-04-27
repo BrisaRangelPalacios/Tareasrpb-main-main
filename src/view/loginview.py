@@ -11,7 +11,7 @@ def main(page: ft.Page):
     correo = ft.TextField(
         label="Correo electrónico",
         width=280,
-        border_color="pink200"
+        border_color="purple200"
     )
 
     contraseña = ft.TextField(
@@ -19,17 +19,17 @@ def main(page: ft.Page):
         password=True,
         can_reveal_password=True,
         width=280,
-        border_color="pink200"
+        border_color="purple200"
     )
 
-    mensaje = ft.Text("", color="pink200")
+    mensaje = ft.Text("", color="purple200")
 
     contenido = ft.Container()
 
     pagina_inicio = ft.Column(
         [
-            ft.Text("Bienvenido al Sistema", size=28, weight=ft.FontWeight.BOLD, color="pink200"),
-            ft.Text("Has iniciado sesión correctamente", color="pink100")
+            ft.Text("Bienvenido al Sistema", size=28, weight=ft.FontWeight.BOLD, color="purple200"),
+            ft.Text("Has iniciado sesión correctamente", color="purple100")
         ],
         alignment=ft.MainAxisAlignment.CENTER,
         horizontal_alignment=ft.CrossAxisAlignment.CENTER
@@ -37,8 +37,8 @@ def main(page: ft.Page):
 
     pagina_explorar = ft.Column(
         [
-            ft.Icon(ft.Icons.EXPLORE, size=60, color="pink200"),
-            ft.Text("Explorar contenido", size=25, color="pink200")
+            ft.Icon(ft.Icons.EXPLORE, size=60, color="purple200"),
+            ft.Text("Explorar contenido", size=25, color="purple200")
         ],
         alignment=ft.MainAxisAlignment.CENTER,
         horizontal_alignment=ft.CrossAxisAlignment.CENTER
@@ -46,9 +46,9 @@ def main(page: ft.Page):
 
     pagina_perfil = ft.Column(
         [
-            ft.Icon(ft.Icons.PERSON, size=60, color="pink200"),
-            ft.Text("Perfil del usuario", size=25, color="pink200"),
-            ft.Text("admin@gmail.com", color="pink100")
+            ft.Icon(ft.Icons.PERSON, size=60, color="purple200"),
+            ft.Text("Perfil del usuario", size=25, color="purple200"),
+            ft.Text("admin@gmail.com", color="purple100")
         ],
         alignment=ft.MainAxisAlignment.CENTER,
         horizontal_alignment=ft.CrossAxisAlignment.CENTER
@@ -68,7 +68,7 @@ def main(page: ft.Page):
 
         if correo.value == "" or contraseña.value == "":
             mensaje.value = "Error: Debes llenar todos los campos"
-            mensaje.color = "pink200"
+            mensaje.color = "purple200"
             page.update()
             return
 
@@ -110,14 +110,8 @@ def main(page: ft.Page):
 
         else:
             mensaje.value = "Correo o contraseña incorrectos"
-            mensaje.color = "pink200"
+            mensaje.color = "purple200"
             page.update()
-
-    icono = ft.Icon(
-        icon=ft.Icons.AUTO_AWESOME,
-        size=60,
-        color="pink200"
-    )
 
     sesion = ft.Container(
         width=350,
@@ -128,24 +122,24 @@ def main(page: ft.Page):
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             spacing=15,
             controls=[
-                ft.Text("Iniciar sesión", size=30, weight="bold", color="pink200"),
+                ft.Text("Iniciar sesión", size=30, weight="bold", color="purple200"),
                 correo,
                 contraseña,
                 ft.ElevatedButton(
                     content=ft.Text("Ingresar"),
                     width=200,
-                    bgcolor="pink200",
+                    bgcolor="purple200",
                     color="white",
                     on_click=login
                 ),
                 mensaje,
                 ft.TextButton(
-                    content=ft.Text("¿Olvidaste tu contraseña?", color="pink200")
+                    content=ft.Text("¿Olvidaste tu contraseña?", color="purple200")
                 )
             ]
         )
     )
 
-    page.add(icono, sesion)
+    page.add(sesion)
 
 ft.app(target=main)
