@@ -6,7 +6,7 @@ def main(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
     usuario_valido = "admin"
-    password_valido = "12345"
+    password_valido = "12345678"
 
     correo = ft.TextField(
         label="Correo electrónico",
