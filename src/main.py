@@ -1,8 +1,10 @@
 import flet as ft
-from controllers.UserController import AuthController 
+from controllers.UserController import AuthController
 from controllers.TareaController import TareaController
 from view.LoginView import LoginView
-from view.dashboardView import dashboardView  
+from view.dashboardView import DashboardView
+from view.RegistroView import RegistroView
+from view.UserView import UserView, ModificarView
 
 def start(page: ft.Page):
     page.title = "Sistema SIGE"
@@ -17,7 +19,7 @@ def start(page: ft.Page):
             page.views.append(LoginView(page, auth_ctrl))
 
         elif page.route == "/dashboard":
-            page.views.append(dashboardView(page, task_ctrl))
+            page.views.append(DashboardView(page, task_ctrl))
 
         page.update()
 
