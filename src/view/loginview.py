@@ -1,58 +1,145 @@
 import flet as ft
 
-def LoginView(page, auth_controller):
+def main(page: ft.Page):
+    page.title = "Inicio de sesión"
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
-    page.bgcolor = "#f8bbd0"  
+    usuario_valido = "admin"
+    password_valido = "12345"
+
     correo = ft.TextField(
         label="Correo electrónico",
-        width=300,
-        border_radius=10
+        width=280,
+        border_color="purple200"
     )
 
     contraseña = ft.TextField(
-        label="Contraseña",
+        label="Introduzca su contraseña",
         password=True,
         can_reveal_password=True,
-        width=300,
-        border_radius=10
+        width=280,
+        border_color="purple200"
     )
 
-    mensaje = ft.Text(color="red")
+    mensaje = ft.Text("", color="purple200")
+
+    contenido = ft.Container() 
+
+    pagina_inicio = ft.Column( 
+        [
+            ft.Text("Bienvenido al Sistema", size=28, weight=ft.FontWeight.BOLD, color="purple200"),
+            ft.Text("Has iniciado sesión correctamente", color="purple100")
+        ],
+        alignment=ft.MainAxisAlignment.CENTER,
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER
+    )
+
+    pagina_explorar = ft.Column(
+        [
+            ft.Icon(ft.Icons.EXPLORE, size=60, color="purple200"),
+            ft.Text("Explorar contenido", size=25, color="purple200")
+        ],
+        alignment=ft.MainAxisAlignment.CENTER,
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER
+    )
+
+    pagina_perfil = ft.Column(
+        [
+            ft.Icon(ft.Icons.PERSON, size=60, color="purple200"),
+            ft.Text("Perfil del usuario", size=25, color="purple200"),
+            ft.Text("admin@gmail.com", color="purple100")
+        ],
+        alignment=ft.MainAxisAlignment.CENTER,
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER
+    )
+
+    def cambiar_pagina(e):
+        if e.control.selected_index == 0:
+            contenido.content = pagina_inicio
+        elif e.control.selected_index == 1:
+            contenido.content = pagina_explorar
+        elif e.control.selected_index == 2:
+            contenido.content = pagina_perfil
+
+        page.update()
 
     def login(e):
-        user = auth_controller.model.validar_login(correo.value, contraseña.value)
 
-        if user:
-            page.session.set("user", user)
-            page.go("/dashboard")
-        else:
-            mensaje.value = "Correo o contraseña incorrectos"
+        if correo.value == "" or contraseña.value == "":
+            mensaje.value = "Error: Debes llenar todos los campos"
+            mensaje.color = "purple200"
             page.update()
+            return
 
-    return ft.View(
-        route="/",
-        controls=[
-            ft.Container(
-                content=ft.Column(
+        if correo.value == usuario_valido and contraseña.value == password_valido:
+
+            page.clean()
+
+            contenido.content = pagina_inicio
+
+            page.add(
+                ft.Column(
                     [
-                        ft.Icon(ft.icons.AUTO_AWESOME, size=60, color="pink"),
-                        ft.Text("Bienvenido", size=28, weight="bold", color="pink"),
-                        correo,
-                        contraseña,
-                        ft.ElevatedButton(
-                            "Iniciar sesión",
-                            width=200,
-                            bgcolor="pink",
-                            color="white",
-                            on_click=login
-                        ),
-                        mensaje
+                        contenido
                     ],
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                    spacing=15
-                ),
-                alignment=ft.alignment.center,
-                expand=True
+                    alignment=ft.MainAxisAlignment.CENTER
+                )
             )
-        ]
+
+            page.navigation_bar = ft.NavigationBar(
+                destinations=[
+                    ft.NavigationBarDestination(
+                        icon=ft.Icons.HOME,
+                        label="Inicio"
+                    ),
+                    ft.NavigationBarDestination(
+                        icon=ft.Icons.EXPLORE,
+                        label="Explorar"
+                    ),
+                    ft.NavigationBarDestination(
+                        icon=ft.Icons.PERSON,
+                        label="Perfil"
+                    ),
+                ],
+                on_change=cambiar_pagina
+            )
+
+            page.update()
+
+        else:
+            mensaje.value = "Correo o contraseña incorrectos"
+            mensaje.color = "purple200"
+            page.update()
+
+    sesion = ft.Container(
+        width=350,
+        padding=30,
+        border_radius=10,
+        bgcolor="white",
+        content=ft.Column(
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            spacing=15,
+            controls=[
+                ft.Text("Iniciar sesión", size=30, weight="bold", color="purple200"),
+                correo,
+                contraseña,
+                ft.ElevatedButton(
+                    content=ft.Text("Ingresar"),
+                    width=200,
+                    bgcolor="purple200",
+                    color="white",
+                    on_click=login
+                ),
+                mensaje,
+                ft.TextButton(
+                    content=ft.Text("¿Olvidaste tu contraseña?", color="purple200")
+                )
+            ]
+        )
     )
+
+    page.add(sesion)
+
+ft.app(target=main)

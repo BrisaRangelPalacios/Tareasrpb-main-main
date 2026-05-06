@@ -7,8 +7,10 @@ from view.RegistroView import RegistroView
 from view.UserView import UserView, ModificarView
 
 def start(page: ft.Page):
-    page.title = "Sistema SIGE"
-
+    page.title="Sistema SIGE"
+    page.window_width=450
+    page.window_height=700
+    
     auth_ctrl = AuthController()
     task_ctrl = TareaController()
 
@@ -17,18 +19,29 @@ def start(page: ft.Page):
 
         if page.route == "/":
             page.views.append(LoginView(page, auth_ctrl))
-
+            
         elif page.route == "/dashboard":
             page.views.append(DashboardView(page, task_ctrl))
 
         page.update()
+        
+    def view_pop(e):
+        if len(page.views)> 1:
+            page.views.pop()
+            top_view=page.views[-1]
+            page.go(top_view.route)
 
     page.on_route_change = route_change
-
-    page.go("/")
+    page.on_view_pop=view_pop
+    
+    if page.route == "/":
+        route_change(None)
+    else:
+        page.go("/")
+    
 
 def main():
-    ft.app(target=start)  
+    ft.app(target=start)
 
-if __name__ == "__main__":
-    main() 
+if __name__ == "__main__":    
+    main()
